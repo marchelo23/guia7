@@ -1,0 +1,80 @@
+/* Custom styles */
+body {
+    background-color: #f8f9fa;
+}
+
+.navbar-brand svg {
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover svg {
+    transform: rotate(-10deg);
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+.list-group-item {
+    border: none;
+    margin-bottom: 0.5rem;
+    border-radius: 10px !important;
+    transition: all 0.2s ease;
+}
+
+.list-group-item:hover {
+    transform: translateX(5px);
+    background-color: #f8f9fa;
+}
+
+.badge {
+    transition: all 0.2s ease;
+}
+
+.list-group-item:hover .badge {
+    transform: scale(1.1);
+}
+
+.list-group-item.hidden {
+    display: none;
+}
+
+#searchInput {
+    border-radius: 20px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+#searchInput::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+#searchInput:focus {
+    background-color: white;
+    color: #333;
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .card {
+        margin: 0.5rem;
+    }
+
+    .list-group-item {
+        margin-bottom: 0.25rem;
+    }
+}

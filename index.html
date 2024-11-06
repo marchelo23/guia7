@@ -1,64 +1,65 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="css/styles.css" rel="stylesheet" />
-    <link rel="icon" href="img/js.png" sizes="32x32" type="image/png" />
-    <title>Objetos en JavaScript</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía 7</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/indexStyles.css">
 </head>
-
 <body>
-
-    <header class="p-3 text-bg-dark">
-        <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href="index.html" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                    <img src="./img/js.png" class="bi me-2" width="48" height="48">
-                </a>
-
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="pages/ejemplo1.html" class="nav-link px-2 text-white">Ejemplo 1</a></li>
-                    <li><a href="pages/ejemplo2.html" class="nav-link px-2 text-white">Ejemplo 2</a></li>
-                    <li><a href="pages/ejemplo3.html" class="nav-link px-2 text-white">Ejemplo 3</a></li>
-                    <li><a href="pages/ejemplo4.html" class="nav-link px-2 text-white">Ejemplo 4</a></li>                    
-                </ul>   
-                
-                <div class="text-end">
-                    <button type="button" id="idBtnDiv" class="btn btn-outline-light me-2"># de etiqueta &lt;div&gt;</button>
-                    <button type="button" id="idBtnButton" class="btn btn-warning"># de etiqueta &lt;button&gt;</button>
-                </div>
-        </div>
-    </header>
-
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <div class="container">
-        <div class="px-4 py-5 my-5 text-center">
-            <img class="d-block mx-auto mb-4" src="./img/dom.png" alt="Documente Object Model">
-            <h1 class="display-5 fw-bold">¿Qué es el DOM?</h1>
-            <div class="col-lg-6 mx-auto">
-                <p class="lead mb-4">
-                    Las siglas <span class="fw-bold">DOM</span> significan <span class="fw-bold">Document Object Model</span>, 
-                    o lo que es lo mismo, la estructura del documento HTML. Una página HTML está formada por múltiples etiquetas HTML, 
-                    anidadas una dentro de otra, formando un árbol de etiquetas relacionadas entre sí, que se 
-                    denomina <span class="fw-bold">árbol DOM</span> (o simplemente DOM).
-                </p>
-                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                    <button type="button" id="idBtnSpan" class="btn btn-primary btn-lg px-4 gap-3"># de etiqueta &lt;span&gt;</button>
-                    <button type="button" id="idBtnP" class="btn btn-outline-secondary btn-lg px-4"># etiqueta &lt;p&gt;</button>
+        <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            JS Guide
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="ms-auto">
+                <input type="text" id="searchInput" class="form-control" placeholder="Buscar tema...">
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h1 class="card-title text-center mb-4">Guía 7</h1>
+                    <div class="list-group" id="guideList">
+                        <a href="pages/ejemplo1.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Ejemplo 1
+                            <span class="badge bg-primary rounded-pill">1</span>
+                        </a>
+                        <a href="pages/ejemplo2.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Ejemplo 2
+                            <span class="badge bg-primary rounded-pill">2</span>
+                        </a>
+                        <a href="pages/ejemplo3.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Ejemplo 3
+                            <span class="badge bg-primary rounded-pill">3</span>
+                        </a>
+                        <a href="pages/ejemplo4.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Ejemplo 4
+                            <span class="badge bg-primary rounded-pill">4</span>
+                        </a>
+                        <a href="pages/index.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Index
+                            <span class="badge bg-primary rounded-pill">5</span>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>       
-
+        </div>
     </div>
+</div>
 
-
-    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="js/index.js" defer></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/index1.js"></script>
 </body>
-
 </html>
