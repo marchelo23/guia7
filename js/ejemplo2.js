@@ -1,12 +1,13 @@
 // Referencias al formulario y al modal
 const formulario = document.forms["frmRegistro"];
-const modal = new bootstrap.Modal(document.getElementById("idModal"), { keyboard: false }); // No cerrar al presionar ESC
+const modal = new bootstrap.Modal(document.getElementById("idModal"), { keyboard: false });
 const bodyModal = document.getElementById("idBodyModal");
 
 // Evento submit del formulario
 formulario.addEventListener("submit", function (event) {
-    if (!validarFormulario()) {
-        event.preventDefault(); // Evitar el envío si hay errores
+    event.preventDefault(); // Siempre prevenir el envío del formulario
+    if (validarFormulario()) {
+        mostrarEnModal();
     }
 });
 
@@ -18,98 +19,102 @@ function validarFormulario() {
     const correo = document.getElementById("idCorreo");
     const password = document.getElementById("idPassword");
     const passwordRepetir = document.getElementById("idPasswordRepetir");
-    const intereses = [
-        document.getElementById("idCkProgramacion"),
-        document.getElementById("idCkBD"),
-        document.getElementById("idCkRedes"),
-        document.getElementById("idCkSeguridad")
-    ];
+    const intereses = document.querySelectorAll('input[type="checkbox"]');
     const carreras = document.getElementsByName("idRdCarrera");
     const pais = document.getElementById("idCmPais");
 
-    let errores = [];
-
     // a. Validar que los campos no estén vacíos
-    if (!nombre.value.trim()) errores.push("El campo de nombres está vacío.");
-    if (!apellidos.value.trim()) errores.push("El campo de apellidos está vacío.");
+    const camposObligatorios = [nombre, apellidos, fechaNac, correo, password, passwordRepetir];
+    for (let campo of camposObligatorios) {
+        if (campo.value.trim() === '') {
+            alert(`El campo ${campo.previousElementSibling.textContent} es obligatorio.`);
+            return false;
+        }
+    }
 
     // b. Validar que la fecha de nacimiento no supere la fecha actual
-    const hoy = new Date();
     const fechaUsuario = new Date(fechaNac.value);
-    if (!fechaNac.value || fechaUsuario > hoy) errores.push("Fecha de nacimiento inválida.");
-
-    // c. Validar correo electrónico con expresión regular
-    const correoRegEx = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    if (!correoRegEx.test(correo.value)) errores.push("El correo electrónico no es válido.");
-
-    // d. Validar que las contraseñas coincidan
-    if (password.value !== passwordRepetir.value) errores.push("Las contraseñas no coinciden.");
-
-    // e. Verificar que se seleccione al menos un interés
-    const interesSeleccionado = intereses.some(interes => interes.checked);
-    if (!interesSeleccionado) errores.push("Seleccione al menos un interés.");
-
-    // f. Verificar que el usuario seleccione una carrera
-    const carreraSeleccionada = Array.from(carreras).some(carrera => carrera.checked);
-    if (!carreraSeleccionada) errores.push("Seleccione una carrera.");
-
-    // g. Verificar que sea seleccionado un país de origen
-    if (pais.value === "Seleccione una opcion") errores.push("Seleccione un país de origen.");
-
-    // Mostrar errores o proceder a mostrar datos en el modal
-    if (errores.length > 0) {
-        alert("Errores:\n" + errores.join("\n"));
+    if (fechaUsuario > new Date()) {
+        alert('La fecha de nacimiento no puede ser mayor a la fecha actual');
         return false;
     }
-    mostrarEnModal();
+
+    // c. Validar correo electrónico con expresión regular
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(correo.value)) {
+        alert('Correo electrónico inválido');
+        return false;
+    }
+
+    // d. Validar que las contraseñas coincidan
+    if (password.value !== passwordRepetir.value) {
+        alert('Las contraseñas no coinciden');
+        return false;
+    }
+
+    // e. Verificar que se seleccione al menos un interés
+    if (![...intereses].some(interes => interes.checked)) {
+        alert('Debe seleccionar al menos un interés');
+        return false;
+    }
+
+    // f. Verificar que el usuario seleccione una carrera
+    if (![...carreras].some(carrera => carrera.checked)) {
+        alert('Debe seleccionar una carrera');
+        return false;
+    }
+
+    // g. Verificar que sea seleccionado un país de origen
+    if (pais.value === "Seleccione una opción") {
+        alert('Debe seleccionar un país de origen');
+        return false;
+    }
+
     return true;
 }
 
-// Función para mostrar la información en el modal en forma de tabla, sin innerHTML
+// Función para mostrar la información en el modal en forma de tabla
 function mostrarEnModal() {
-    // Eliminar todos los nodos hijos previos en el modal
-    while (bodyModal.firstChild) {
-        bodyModal.removeChild(bodyModal.firstChild);
+    // Limpiar contenido previo
+    bodyModal.innerHTML = '';
+
+    // Crear tabla
+    const tabla = document.createElement('table');
+    tabla.className = 'table';
+
+    // Función para añadir filas a la tabla
+    function añadirFila(label, valor) {
+        const fila = document.createElement('tr');
+        const celda1 = document.createElement('td');
+        const celda2 = document.createElement('td');
+        celda1.textContent = label;
+        celda2.textContent = valor;
+        fila.appendChild(celda1);
+        fila.appendChild(celda2);
+        tabla.appendChild(fila);
     }
 
-    const tabla = document.createElement("table");
-    tabla.className = "table table-striped";
-    const tbody = document.createElement("tbody");
+    // Añadir información a la tabla
+    añadirFila('Nombre', document.getElementById('idNombre').value);
+    añadirFila('Apellidos', document.getElementById('idApellidos').value);
+    añadirFila('Fecha de Nacimiento', document.getElementById('idFechaNac').value);
+    añadirFila('Correo Electrónico', document.getElementById('idCorreo').value);
+    añadirFila('Intereses', obtenerInteresesSeleccionados());
+    añadirFila('Carrera', obtenerCarreraSeleccionada());
+    añadirFila('País de Origen', document.getElementById('idCmPais').options[document.getElementById('idCmPais').selectedIndex].text);
 
-    // Función para agregar filas a la tabla
-    function agregarFila(campo, valor) {
-        const fila = document.createElement("tr");
-        const celdaCampo = document.createElement("td");
-        celdaCampo.textContent = campo;
-        const celdaValor = document.createElement("td");
-        celdaValor.textContent = valor;
-        fila.appendChild(celdaCampo);
-        fila.appendChild(celdaValor);
-        tbody.appendChild(fila);
-    }
-
-    // Agregar datos del formulario a la tabla
-    agregarFila("Nombres", document.getElementById("idNombre").value);
-    agregarFila("Apellidos", document.getElementById("idApellidos").value);
-    agregarFila("Fecha de Nacimiento", document.getElementById("idFechaNac").value);
-    agregarFila("Correo Electrónico", document.getElementById("idCorreo").value);
-    agregarFila("Intereses", obtenerIntereses());
-    agregarFila("Carrera", obtenerCarrera());
-    agregarFila("País de Origen", pais.options[pais.selectedIndex].text);
-
-    tabla.appendChild(tbody);
     bodyModal.appendChild(tabla);
-    modal.show(); // Mostrar el modal
+
+    // Mostrar el modal
+    modal.show();
 }
 
-// Función para obtener intereses seleccionados
-function obtenerIntereses() {
-    const intereses = ["Programación", "Base de Datos", "Inteligencia Artificial", "Seguridad Informática"];
-    return intereses.filter((_, i) => document.getElementById(`idCk${intereses[i].replace(" ", "")}`).checked).join(", ");
+function obtenerInteresesSeleccionados() {
+    const intereses = document.querySelectorAll('input[type="checkbox"]:checked');
+    return [...intereses].map(interes => interes.nextElementSibling.textContent).join(', ');
 }
 
-// Función para obtener la carrera seleccionada
-function obtenerCarrera() {
-    const carreras = document.getElementsByName("idRdCarrera");
-    return Array.from(carreras).find(carrera => carrera.checked)?.nextSibling.textContent.trim() || "";
+function obtenerCarreraSeleccionada() {
+    const carrera = document.querySelector('input[name="idRdCarrera"]:checked');
+    return carrera ? carrera.nextElementSibling.textContent : '';
 }
